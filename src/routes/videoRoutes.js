@@ -2,10 +2,17 @@ const express = require('express');
 const router = express.Router();
 const videoController = require('../controllers/videoController');
 
-router.get('/seed', videoController.seedDatabase);
+const { protect, adminOnly } = require('../middlewares/authMiddleware');
+
+// Rotas Públicas 
 router.get('/', videoController.getAllVideos);
-router.post('/', videoController.createVideo);
 router.get('/:id', videoController.getVideoById);
-router.delete('/:id', videoController.deleteVideo); 
+
+// Rotas Admin
+router.post('/', protect, adminOnly, videoController.createVideo);
+router.delete('/:id', protect, adminOnly, videoController.deleteVideo);
+
+// Rota de Seed (pública por enquanto)
+router.get('/seed', videoController.seedDatabase);
 
 module.exports = router;
