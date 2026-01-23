@@ -32,50 +32,22 @@ exports.createVideo = async (req, res) => {
     }
 };
 
-// Popular o seed (apenas teste)
-exports.seedDatabase = async (req, res) => {
+// Atualizar vídeo (PUT)
+exports.updateVideo = async (req, res) => {
     try {
-        await Video.deleteMany({}); 
+        const { id } = req.params;
+        
+        const updatedVideo = await Video.findByIdAndUpdate(id, req.body, { new: true });
 
-        const initialData = [
-            {
-                title: "Introdução à Lógica de Programação",
-                author: "Prof. Carlos",
-                tag: "Iniciante",
-                views: 1240,
-                isPremium: false,
-                image: "https://img.youtube.com/vi/M576WGiDBdQ/maxresdefault.jpg",
-                videoUrl: "https://www.youtube.com/embed/M576WGiDBdQ",
-                description: "Conceitos fundamentais da programação."
-            },
-            {
-                title: "Masterclass: Arquitetura Limpa",
-                author: "Menta Dev",
-                tag: "Avançado",
-                views: 850,
-                isPremium: true,
-                image: "https://via.placeholder.com/300x160/c29437/ffffff?text=Clean+Code",
-                videoUrl: "",
-                description: "Clean Architecture para devs seniors."
-            },
-            {
-                title: "CSS Grid e Flexbox na Prática",
-                author: "Ana Front",
-                tag: "Frontend",
-                views: 2100,
-                isPremium: false,
-                image: "https://img.youtube.com/vi/3elGSZSWTbM/maxresdefault.jpg",
-                videoUrl: "https://www.youtube.com/embed/3elGSZSWTbM",
-                description: "Domine layouts modernos com CSS."
-            }
-        ];
+        if (!updatedVideo) {
+            return res.status(404).json({ message: "Vídeo não encontrado" });
+        }
 
-        await Video.insertMany(initialData);
-        res.json({ message: "Banco de dados populado com sucesso!" });
+        res.json(updatedVideo);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(400).json({ message: error.message });
     }
-}; 
+};
 
 // Deletar um vídeo
 exports.deleteVideo = async (req, res) => {

@@ -8,11 +8,12 @@ const { protect, adminOnly } = require('../middlewares/authMiddleware');
 router.get('/', videoController.getAllVideos);
 router.get('/:id', videoController.getVideoById);
 
-// Rotas Admin
+// Rotas Admin (Protegidas)
 router.post('/', protect, adminOnly, videoController.createVideo);
-router.delete('/:id', protect, adminOnly, videoController.deleteVideo);
 
-// Rota de Seed (pública por enquanto)
-router.get('/seed', videoController.seedDatabase);
+// --- NOVA ROTA DE ATUALIZAÇÃO ---
+router.put('/:id', protect, adminOnly, videoController.updateVideo);
+
+router.delete('/:id', protect, adminOnly, videoController.deleteVideo);
 
 module.exports = router;
