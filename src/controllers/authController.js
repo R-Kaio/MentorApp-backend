@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
-const SECRET_KEY = process.env.JWT_SECRET || 'meu_segredo_super_secreto';
+const SECRET_KEY = process.env.JWT_SECRET || 'viva_la_casta';
 
 // Registrar Usuário 
 exports.register = async (req, res) => {
